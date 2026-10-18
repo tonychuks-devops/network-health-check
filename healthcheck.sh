@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-HOST=("8.8.8.8" "1.1.1.1" "google.com"
+HOSTS=("8.8.8.8" "1.1.1.1" "google.com" "github.com")
 LOG="health-check.log"
 
 ts() { date '+%F %T' ;}
@@ -13,5 +13,16 @@ for host in "${HOSTS[@]}"; do
   fi
 done
 
+DNS_HOSTS=("google.com" "github.com" "cloudflare.com")
+
+echo "=== DNS check $(ts) ===" >> "$LOG"
+for host in "${DNS_HOSTS[@]}"; do
+  if nslookup "$host" > /dev/null 2>&1; then
+   echo "$(ts) DNS OK   $host" >> "$LOG"
+  else 
+    echo "$(ts) DNS FAIL $host" >> "$LOG"
+  fi
+  done 
+
 echo "--- Failures ---"
-grep Fail "$LOG"
+grep FAIL "$LOG"
