@@ -23,6 +23,17 @@ for host in "${DNS_HOSTS[@]}"; do
     echo "$(ts) DNS FAIL $host" >> "$LOG"
   fi
   done 
+PORTS=("google.com:443" "github.com:443" "github.com:22" "8.8.8.8:53")
 
+echo "=== Port check $(ts) ===" >> "$LOG"
+for entry in "${PORTS[@]}" ; do
+    host="${entry%%:*}"
+    port="${entry##*:}"
+    if timeout 3 bash -c "echo > /dev/tcp/$host/$port" 2>/dev/null; then
+       echo "$(ts) PORT OPEN $host:$port" >> "LOG"
+       else
+       echo "$(ts) PORT FAIL $host:$port" >> "LOG"
+  fi
+done
 echo "--- Failures ---"
 grep FAIL "$LOG"
