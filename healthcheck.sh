@@ -30,9 +30,9 @@ for entry in "${PORTS[@]}" ; do
     host="${entry%%:*}"
     port="${entry##*:}"
     if timeout 3 bash -c "echo > /dev/tcp/$host/$port" 2>/dev/null; then
-       echo "$(ts) PORT OPEN $host:$port" >> "LOG"
+       echo "$(ts) PORT OPEN $host:$port" >> "$LOG"
        else
-       echo "$(ts) PORT FAIL $host:$port" >> "LOG"
+       echo "$(ts) PORT FAIL $host:$port" >> "$LOG"
   fi
 done
 echo "--- Failures ---"
