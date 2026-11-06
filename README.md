@@ -1,1 +1,38 @@
+cat > README.md << 'EOF'
 # network-health-check
+A Bash script that pings hosts,checks DNS lookups, checks by ports,logs everything to 'health-check-log', and filters failures with  'grep FAIL'
+
+## Requirements
+-Bash (Linux, macOS or WSL)
+- 'ping' and 'nslookup' (Ubuntu: 'sudo apt install dnsutils')
+## Usage
+'''bash
+chomd +x healthcheck.sh
+./healthcheck.sh
+'''
+if nothing print under '--- Failure ---', everything passed.
+
+## Sample output
+
+'''text 
+=== Ping check 2026-10-29 03:52:57 ===
+2026-10-29 03:52:59 PING OK 8.8.8.8
+2026-10-29 03:53:00 PING OK 1.1.1.1
+2026-10-29 03:53:01 PING OK google.com
+2026-10-29 03:53:02 PING OK github.com
+=== DNS check 2026-10-29 03:53:02 ===
+2026-10-29 03:53:02 DNS OK   google.com
+2026-10-29 03:53:02 DNS OK   github.com
+2026-10-29 03:53:03 DNS OK   cloudflare.com
+=== Port check 2026-10-29 03:53:03 ===
+2026-10-29 03:53:03 PORT OPEN google.com:443
+2026-10-29 03:53:03 PORT OPEN github.com:443
+2026-10-29 03:53:03 PORT OPEN github.com:22
+2026-10-29 03:53:04 PORT OPEN 8.8.8.8:53
+
+## Customize
+ Edit the 'HOSTS', 'DNS_HOSTS' and 'PORTS' lists in 'healthcheck.sh'.
+
+## Workflow
+Each feature was built on its own branch and merged to 'main' through a pull request.
+EOF
